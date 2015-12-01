@@ -1,0 +1,78 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<style>
+    .well {
+        box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.12), 0 1px 6px 0 rgba(0, 0, 0, 0.12);
+    }
+</style>
+<h4>Session Form:</h4>
+<div class="well bs-component">
+    <form class="form-group">
+        <fieldset>
+            <div class="form-group label-floating">
+                <label class="control-label" for="destination-select">Destination:</label>
+                <select id="destination-select" class="form-control" ng-model="session.destination" ng-options="dest as dest.name for dest in airports track by dest.code" ng-change="updateAirports()">
+                    <option value="">Select a Destination</option>
+                </select>
+            </div>
+
+            <div class="form-group label-floating">
+                <label class="control-label" for="origin1-select">Origin 1:</label>
+                <select id="origin1-select" class="form-control" ng-model="session.origin1" ng-options="org1 as org1.name for org1 in org1airports track by org1.code" ng-change="updateAirports()">
+                    <option value="">Select a Origin 1</option>
+                </select>
+            </div>
+
+            <div class="form-group label-floating">
+                <label class="control-label" for="origin2-select">Origin 2:</label>
+                <select id="origin2-select" class="form-control" ng-model="session.origin2" ng-options="org2 as org2.name for org2 in org2airports track by org2.code" ng-change="updateAirports()">
+                    <option value="">Select a Origin 2</option>
+                </select>
+            </div>
+
+            <div class="form-group label-floating">
+                <label class="control-label" for="joke1">Joke 1:</label>
+                <input id="joke1" class="form-control" ng-model="session.joke1" placeholder="120 character max" maxlength="140" type="text">
+            </div>
+
+            <div class="form-group label-floating">
+                <label class="control-label" for="joke2">Joke 2:</label>
+                <input id="joke2" class="form-control" ng-model="session.joke2" placeholder="120 character max" maxlength="140" type="text">
+            </div>
+            <!-- Date Controls -->
+            <div class="form-group label-floating" ng-init="initDatePicker()">
+                <label class="control-label" for="date-start">Start Time</label>
+                <input type="text" id="date-start" class="form-control floating-label" placeholder="enter time" ng-model="session.startTime">
+            </div>
+
+            <div class="form-group label-floating">
+                <label class="control-label" for="date-vote-end">Vote End Time</label>
+                <input type="text" id="date-vote-end" class="form-control floating-label" placeholder="enter time" ng-model="session.voteEndTime">
+            </div>
+
+            <div class="form-group label-floating">
+                <label class="control-label" for="date-vote-start">Deal Start Time</label>
+                <input type="text" id="date-deal-start" class="form-control floating-label" placeholder="enter time" ng-model="session.dealStartTime">
+            </div>
+
+            <div class="form-group label-floating">
+                <label class="control-label" for="date-end">End Time</label>
+                <input type="text" id="date-end" class="form-control floating-label" placeholder="enter time" ng-model="session.endTime">
+            </div>
+
+            <!-- Start / End Messages -->
+            <div class="form-group label-floating">
+                <label class="control-label" for="start-message">Start Message</label>
+                <input id="start-message" class="form-control" ng-model="session.startMessage" placeholder="30 character max" maxlength="30">
+            </div>
+
+            <div class="form-group label-floating">
+                <label class="control-label" for="next-voting-message">Next Voting Message</label>
+                <input id="next-voting-message" class="form-control" ng-model="session.nextVotingMessage" placeholder="30 character max" maxlength="30">
+            </div>
+
+            <button type="submit" class="btn btn-info" ng-click="addSession(session)">{{ sessionUpdate ? 'Update' : 'Submit' }}</button>
+            <button type="button" class="btn btn-default" ng-click="clearFormData()">Clear</button>
+        </fieldset>
+    </form>
+</div>
+

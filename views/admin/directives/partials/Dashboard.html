@@ -1,0 +1,166 @@
+<div>
+    <style>
+        .toast-container{
+            display: inline-flex;
+        }
+        .toast-widget {
+            margin: 10px;
+            width:100%;
+            min-width: 250px;
+            min-height: 100px;
+            color: white;
+        }
+        .toast-widget-blue{
+            background-color: #00B0FF;
+        }
+
+        .toast-widget-orange{
+            background-color: #FF6D00;
+        }
+
+        .toast-widget-grey{
+            background-color: #5D4037;
+        }
+
+        .toast-widget-green{
+            background-color: #388E3C;
+        }
+
+        .toast-details{
+            text-align: left;
+            padding-top: 10px;
+            padding-right: 0;
+        }
+        .toast-details span{
+            font-size: 32px;
+            line-height: 0.8pt;
+        }
+        .toast-details small{
+            font-weight: 300;
+        }
+        .toast-details p {
+            font-weight: 300;
+            font-size: 10px;
+            margin-top: 10px;
+        }
+
+        .chart-doughnut {
+            max-width: 400px;
+            max-height: 200px;
+        }
+        .panel-body{
+            font-weight: bold;
+            text-align: center;
+        }
+        .icon-preview{
+            border-right: solid 1px white;
+            height: 100px;
+        }
+        .mdi-social-plus-one, .mdi-editor-functions, .mdi-social-people{
+            font-size: 80px;
+        }
+        .panel-body {
+            font-weight: 300;
+            text-align: left;
+        }
+        .panel-default{
+            max-height:300px;
+        }
+        .chart-line{
+            max-height: 200px;
+        }
+        .panel-container{
+            margin-top: 20px;
+        }
+
+        #line {
+            width:100%;
+            height:100%;
+        }
+    </style>
+
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <canvas id="line" class="chart chart-line" chart-data="seriesData"
+                        chart-labels="seriesLabels" chart-legend="true" chart-series="series"
+                        chart-click="onClick" >
+                </canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="toast-container">
+            <div class="panel panel-default toast-widget toast-widget-blue">
+                <div class="panel-body">
+
+                    <div class="icon-preview col-md-6">
+                        <i class="mdi-social-plus-one"></i>
+                    </div>
+
+                    <div class="col-md-6 toast-details">
+                        <span>{{currentSession.origin1VoteCount}}</span><br>
+                        <small>{{currentSession.origin1.name}}</small>
+                        <p>Total current votes for this region.</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="panel panel-default toast-widget toast-widget-orange">
+                <div class="panel-body">
+
+                    <div class="icon-preview col-md-6">
+                        <i class="mdi-social-plus-one"></i>
+                    </div>
+
+                    <div class="col-md-6 toast-details">
+                        <span>{{currentSession.origin2VoteCount}}</span><br>
+                        <small>{{currentSession.origin2.name}}</small>
+                        <p>Total current votes for this region.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="toast-container">
+            <div class="panel panel-default toast-widget toast-widget-grey">
+                <div class="panel-body">
+
+                    <div class="icon-preview col-md-6">
+                        <i class="mdi-editor-functions"></i>
+                    </div>
+
+                    <div class="col-md-6 toast-details">
+                        <span>{{totalVotes}}</span><br>
+                        <small>Total Votes</small>
+                        <p>Total votes so far in this campaign.</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="panel panel-default toast-widget toast-widget-green">
+                <div class="panel-body">
+
+                    <div class="icon-preview col-md-6">
+                        <i class="mdi-social-people"></i>
+                    </div>
+
+                    <div class="col-md-6 toast-details">
+                        <span>{{highestVotingOrigin.total}}</span><br>
+                        <small>{{highestVotingOrigin.name}}</small>
+                        <p>Highest voting city to date.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

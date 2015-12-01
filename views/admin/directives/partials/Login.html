@@ -1,0 +1,34 @@
+<style>
+    #loginWrapper{
+        margin-top: 15%;
+    }
+    #loginInner{
+      width:400px;
+        margin: auto;
+    }
+
+    #loginBtn {
+      float:right;
+    }
+</style>
+<div id="loginWrapper">
+    <div id="loginInner" style="">
+        <div id="inputHolder">
+            <form class="form-group" ng-submit="login()">
+                <div class="form-group">
+                    <input class="form-control" ng-model="auth.username" placeholder="username">
+                </div>
+
+                <div class="form-group">
+                    <input class="form-control" ng-model="auth.password" placeholder="password" type="password">
+                </div></form>
+
+        </div>
+      <div>
+          <span>forgot <b>password?</b></span>
+          <button id="loginBtn" type="button" class="btn btn-info" ng-click="login()">Login</button>
+      </div>
+
+    </div>
+
+</div>
