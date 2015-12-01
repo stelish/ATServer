@@ -82,8 +82,8 @@
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-body">
-                <canvas id="line" class="chart chart-line" chart-data="seriesData"
-                        chart-labels="seriesLabels" chart-legend="true" chart-series="series"
+                <canvas id="line" class="chart chart-line" chart-data="data"
+                        chart-labels="labels" chart-legend="false" chart-series="series"
                         chart-click="onClick" >
                 </canvas>
             </div>
@@ -95,14 +95,16 @@
             <div class="panel panel-default toast-widget toast-widget-blue">
                 <div class="panel-body">
 
-                    <div class="icon-preview col-md-6">
-                        <i class="mdi-social-plus-one"></i>
+                    <div class="col-md-6">
+                        <canvas id="pass" class="chart chart-line" chart-data="monthlyPass"
+                                chart-labels="labels" chart-legend="false" chart-series="series"
+                                chart-click="onClick" >
+                        </canvas>
                     </div>
 
                     <div class="col-md-6 toast-details">
-                        <span>{{currentSession.origin1VoteCount}}</span><br>
-                        <small>{{currentSession.origin1.name}}</small>
-                        <p>Total current votes for this region.</p>
+                        <p>Total Pass</p>
+                        <span>{{totalPass}}</span>
                     </div>
 
                 </div>
@@ -111,14 +113,17 @@
             <div class="panel panel-default toast-widget toast-widget-orange">
                 <div class="panel-body">
 
-                    <div class="icon-preview col-md-6">
-                        <i class="mdi-social-plus-one"></i>
+                    <div class="col-md-6">
+                        <canvas id="fail" class="chart chart-line" chart-data="monthlyFail"
+                                chart-labels="labels" chart-legend="false" chart-series="series"
+                                chart-click="onClick" >
+                        </canvas>
                     </div>
 
                     <div class="col-md-6 toast-details">
-                        <span>{{currentSession.origin2VoteCount}}</span><br>
-                        <small>{{currentSession.origin2.name}}</small>
-                        <p>Total current votes for this region.</p>
+                        <p>Total fails</p>
+                        <span>{{totalFail}}</span>
+
                     </div>
                 </div>
             </div>

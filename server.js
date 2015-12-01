@@ -95,20 +95,16 @@ app.route('/api/:call')
         }
 
         switch( req.params.call ){
-            case 'getAllSessions':
-                client.smembers("type:session", function (err, obj) {
+            case 'getAllReports':
+                client.smembers("type:reports", function (err, obj) {
                     var result = [];
                     if(obj && obj.length > 0){
 
                         // parse data
                         for(var i = 0; i < obj.length; i++){
-                            var sess = JSON.parse( obj[i] );
+                            var report = JSON.parse( obj[i] );
 
-                            // get origin1 votes
-                            sess.origin1votes = getOriginVotes(sess.id,'1');
-                            sess.origin2votes = getOriginVotes(sess.id,'2');
-
-                            result.push(sess);
+                            result.push(report);
                         }
                     }
                     res.send( result );
@@ -222,24 +218,12 @@ app.route('/api/:call')
     .post(function(req, res) {
         console.log('API POST request: '+req.params.call);
         switch( req.params.call ){
-            case 'addSession':
+            case 'addReport':
                 console.log('sessionid is '+req.body.id);
                 // session data
                 var session_obj = {
-                    "id" : Math.floor(Math.random()*90000) + 10000,
-                    "destination" : req.body.destination,
-                    "origin1" : req.body.origin1,
-                    "origin2" : req.body.origin2,
-                    "joke1" : req.body.joke1,
-                    "joke2" : req.body.joke2,
-                    "startTime" : req.body.startTime,
-                    "endTime" : req.body.endTime,
-                    "dealStartTime" : req.body.dealStartTime,
-                    "voteEndTime" : req.body.voteEndTime,
-                    "startMessage" : req.body.startMessage,
-                    "nextVotingMessage" : req.body.nextVotingMessage,
-                    "origin1votes" : req.body.origin1votes,
-                    "origin2votes" : req.body.origin2votes
+                    "id" : req.body.id,
+                    "date" : req.body.destination
                 };
                 console.log(session_obj.id);
                 var session_arr = [
@@ -254,45 +238,8 @@ app.route('/api/:call')
                         console.log('added: '+res);
                     }
                 });
-
-                // vote store ORIGIN1
-                var origin1Key = "type:votes:"+session_obj.id+':origin1';
-                console.log(origin1Key);
-                client.set(origin1Key,0, function (err, res) {
-                    if(err){
-                        console.log(err);
-                    }
-                    if(res){
-                        console.log(origin1Key + ' ' + res);
-                    }
-                });
-
-                // vote store ORIGIN2
-                var origin2Key = "type:votes:"+session_obj.id+':origin2';
-                client.set(origin2Key,0, function (err, res) {
-                    if(err){
-                        console.log(err);
-                    }
-                    if(res){
-                        console.log(origin2Key + ' ' + res);
-                    }
-                });
                 res.send(200);
                 res.end();
-                break;
-            case 'addVote':
-                // body.origin (origin1 or origin2)
-                var key = "type:votes:"+req.body.id+':'+req.body.origin;
-                console.log('addVote key is '+key);
-                client.incr(key, function(err, reply) {
-                    if(err){
-                        console.log('addVote err is:'+err);
-                    }else{
-                        console.log('addVote reply is:'+reply);
-                        res.sendStatus(200);
-                    }
-
-                });
                 break;
             case 'removeSession':
                 var session = {};

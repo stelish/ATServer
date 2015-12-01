@@ -32,12 +32,48 @@ function getCookie(c_name) {
 
 app.controller('AdminCtrl',['$scope','$http','$filter',function($scope,$http,$filter){
 
-    $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
-    $scope.series = ['Series A', 'Series B'];
-    $scope.data = [
-        [65, 59, 80, 81, 56, 55, 40],
-        [28, 48, 40, 19, 86, 27, 90]
+    $scope.labels = [];
+    $scope.series = ['pass', 'fail'];
+    $scope.data = [];
+
+    $scope.monthlyData = [
+        { "date" : 'jan',"pass" : 65,"fail" : 32},
+        { "date" : 'feb',"pass" : 43,"fail" : 21 },
+        { "date" : 'mar',"pass" : 70,"fail" : 11 },
+        { "date" : 'apr',"pass" : 23,"fail" : 80 },
+        { "date" : 'jun',"pass" : 11,"fail" : 99},
+        { "date" : 'jul',"pass" : 65,"fail" : 32},
+        { "date" : 'aug',"pass" : 43,"fail" : 21 },
+        { "date" : 'sep',"pass" : 70,"fail" : 11 },
+        { "date" : 'oct',"pass" : 23,"fail" : 80 },
+        { "date" : 'nov',"pass" : 11,"fail" : 99},
     ];
+
+    $scope.monthlyPass = [];
+    $scope.monthlyFail = [];
+    $scope.totalPass = 0;
+    $scope.totalFail = 0;
+
+    $scope.sortData = function(){
+        var _monthlyPass = [];
+        var _monthlyFail = [];
+        for(var i = 0; i < $scope.monthlyData.length; i++){
+            var obj = $scope.monthlyData[i];
+            $scope.labels.push(obj.date);
+            $scope.totalPass += obj.pass;
+            $scope.totalFail += obj.fail;
+            _monthlyPass.push(obj.pass);
+            _monthlyFail.push(obj.fail);
+        }
+        $scope.data.push(_monthlyPass);
+        $scope.data.push(_monthlyFail);
+        $scope.monthlyPass = _monthlyPass; $scope.monthlyPass.push([]);
+        $scope.monthlyFail = _monthlyFail; $scope.monthlyFail.push([]);
+    };
+
+    $scope.onClick = function (points, evt) {
+        console.log(points, evt);
+    };
 
     $scope.login = function(){
         if($scope.auth.username == $scope.sec[0]){
@@ -57,6 +93,7 @@ app.controller('AdminCtrl',['$scope','$http','$filter',function($scope,$http,$fi
         if(ccadminCookie){
             $scope.showLogin = false;
         }
+        $scope.sortData();
     };
 
     $scope.init();
