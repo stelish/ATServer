@@ -4,7 +4,7 @@
 var app = angular.module('app',['chart.js','ngCookies']);
 
 Chart.defaults.global.colours = [
-    '#00B8D4', // blue
+    '#FF6F00', // orange
     '#5D4037', // light grey
     '#F7464A', // red
     '#388E3C', // green

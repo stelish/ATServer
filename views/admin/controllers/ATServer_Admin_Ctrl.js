@@ -32,9 +32,75 @@ function getCookie(c_name) {
 
 app.controller('AdminCtrl',['$scope','$http','$filter',function($scope,$http,$filter){
 
+    // chart options
+    $scope.heroOptions = {
+        animation: false,
+        showScale: false,
+        showTooltips: true,
+        pointDot: true,
+        datasetStrokeWidth: 0.5,
+        bezierCurve : true,
+        bezierCurveTension : 0.2,
+        datasetFill: true
+    };
+
+    $scope.dashOptions = {
+        animation: false,
+        showScale: false,
+        showTooltips: false,
+        pointDot: false,
+        datasetStrokeWidth: 1,
+        bezierCurve : true,
+        bezierCurveTension : 0.2,
+        datasetFill: false
+    };
+
+    $scope.largeDashboardColours = [
+        '#FF6F00', // orange
+        '#BDBDBD', // light grey
+        '#E91E63', // pink
+        '#8BC34A', // green
+        '#29B6F6', // blue
+        '#26A69A', // teal
+        '#8D6E63',  // brown
+        '#FF7043'  // deep orange
+    ];
+
+    $scope.dashboardColours = [
+        '#FFFFFF',
+        '#FFFFFF',
+        '#FFFFFF',
+        '#FFFFFF',
+        '#FFFFFF',
+        '#FFFFFF',
+        '#FFFFFF'
+    ];
+
     $scope.labels = [];
     $scope.series = ['pass', 'fail'];
     $scope.data = [];
+
+    $scope.server = {};
+
+    $scope.autointervals = [
+        {'name' : 'disabled', 'value' : '0'},
+        {'name' : '30min', 'value' : '30'},
+        {'name' : '1hr', 'value' : '60'},
+        {'name' : '1hr 30min', 'value' : '90'},
+        {'name' : '2hr', 'value' : '120'},
+        {'name' : '2hr 30min', 'value' : '150'},
+        {'name' : '3hr', 'value' : '180'},
+        {'name' : '3hr 30min', 'value' : '210'},
+        {'name' : '4hr', 'value' : '240'},
+        {'name' : '4hr 30min', 'value' : '270'},
+        {'name' : '5hr', 'value' : '300'},
+        {'name' : '5hr 30min', 'value' : '330'},
+        {'name' : '6hr', 'value' : '360'},
+        {'name' : '6hr 30min', 'value' : '390'},
+        {'name' : '7hr', 'value' : '420'},
+        {'name' : '7hr 30min', 'value' : '450'},
+        {'name' : '8hr', 'value' : '480'}
+    ];
 
     $scope.monthlyData = [
         { "date" : 'jan',"pass" : 65,"fail" : 32},
@@ -49,8 +115,93 @@ app.controller('AdminCtrl',['$scope','$http','$filter',function($scope,$http,$fi
         { "date" : 'nov',"pass" : 11,"fail" : 99},
     ];
 
-    $scope.monthlyPass = [];
-    $scope.monthlyFail = [];
+    $scope.ATTestSummary = [
+        {"date" : '3 Dec 2015', "time" : '10:05am', "result" : 'pass', "id" : 'AA8765AD9FF9086FS96SF', "testTime" : 24},
+        {"date" : '2 Dec 2015', "time" : '5:05pm', "result" : 'pass', "id" : 'AA8765AD9FF9086FS96SF', "testTime" : 33},
+        {"date" : '2 Dec 2015', "time" : '10:05am', "result" : 'pass', "id" : 'AA8765AD9FF9086FS96SF', "testTime" : 28},
+        {"date" : '1 Dec 2015', "time" : '5:05pm', "result" : 'pass', "id" : 'AA8765AD9FF9086FS96SF', "testTime" : 30},
+        {"date" : '1 Dec 2015', "time" : '10:05am', "result" : 'pass', "id" : 'AA8765AD9FF9086FS96SF', "testTime" : 25},
+        {"date" : '30 Nov 2015', "time" : '5:05pm', "result" : 'pass', "id" : 'AA8765AD9FF9086FS96SF', "testTime" : 40}
+    ];
+
+    $scope.monthlyPass = [
+        [65,43,70,23,11,65,43,70]
+    ];
+    $scope.monthlyFail = [
+        [32,21,11,80,99,32,21,11]
+    ];
+
+    $scope.testCompnentsSummary = [
+        {
+            "componentName" : "layout",
+            "passed" : false,
+            "totalPassed" : 2,
+            "totalFailed" : 1,
+            "results" : [
+                {
+                    "testDesciption" : "should slideout",
+                    "passed" : false,
+                    "screenshot" : false,
+                    "screenshotFilename" : ''
+                }
+            ]
+        },
+        {
+            "componentName" : "lff",
+            "passed" : true,
+            "totalPassed" : 3,
+            "totalFailed" : 0,
+            "results" : [
+                {
+                    "testDesciption" : "should hide lff",
+                    "passed" : true,
+                    "screenshot" : false,
+                    "screenshotFilename" : ''
+                }
+            ]
+        },
+        {
+            "componentName" : "sca",
+            "passed" : false,
+            "totalPassed" : 1,
+            "totalFailed" : 1,
+            "results" : [
+            ]
+        },
+        {
+            "componentName" : "gld",
+            "passed" : true,
+            "totalPassed" : 2,
+            "totalFailed" : 0,
+            "results" : [
+            ]
+        },
+        {
+            "componentName" : "sh",
+            "passed" : true,
+            "totalPassed" : 1,
+            "totalFailed" : 0,
+            "results" : [
+            ]
+        },
+        {
+            "componentName" : "flavabar",
+            "passed" : true,
+            "totalPassed" : 5,
+            "totalFailed" : 0,
+            "results" : [
+            ]
+        },
+        {
+            "componentName" : "login",
+            "passed" : true,
+            "totalPassed" : 2,
+            "totalFailed" : 0,
+            "results" : [
+            ]
+        }
+    ];
+
     $scope.totalPass = 0;
     $scope.totalFail = 0;
 
@@ -67,8 +218,8 @@ app.controller('AdminCtrl',['$scope','$http','$filter',function($scope,$http,$fi
         }
         $scope.data.push(_monthlyPass);
         $scope.data.push(_monthlyFail);
-        $scope.monthlyPass = _monthlyPass; $scope.monthlyPass.push([]);
-        $scope.monthlyFail = _monthlyFail; $scope.monthlyFail.push([]);
+        $scope.monthlyPass.push(_monthlyPass);
+        $scope.monthlyFail.push(_monthlyFail);
     };
 
     $scope.onClick = function (points, evt) {

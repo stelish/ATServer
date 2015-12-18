@@ -4,14 +4,15 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Cracker Admin</title>
+        <title>Automated Tests</title>
         <link rel="stylesheet" href="../vendor/bootstrap-3.3.5-dist/css/bootstrap.min.css">
-
+        <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,100' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="../vendor/bootstrap-material-design-master/dist/css/roboto.min.css">
         <link rel="stylesheet" href="../vendor/bootstrap-material-design-master/dist/css/material-fullpalette.css">
         <link rel="stylesheet" href="../vendor/bootstrap-material-design-master/dist/css/ripples.min.css">
         <link rel="stylesheet" href="../vendor/angular-charts/angular-chart.min.css">
         <link rel="stylesheet" href="../vendor/bootstrap-material-datetimepicker-gh-pages/css/bootstrap-material-datetimepicker.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
         <!-- Dropdown.js -->
         <link href="//cdn.rawgit.com/FezVrasta/dropdown.js/master/jquery.dropdown.css" rel="stylesheet">
@@ -40,6 +41,279 @@
                 box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.12), 0 1px 6px 0 rgba(0, 0, 0, 0.12) !important;
             }
 
+            .toast-container{
+                display: inline-flex;
+                padding: 0;
+            }
+            .toast-widget {
+                margin: 10px;
+                width:100%;
+                max-width: 200px;
+                min-width: 250px;
+                color: white;
+            }
+            .toast-widget-blue{
+                background-color: #00ACC1;
+            }
+
+            .total-widget-darkblue {
+                background-color: #0097A7;
+            }
+
+            .toast-widget-orange{
+                background-color: #FF6F00;
+            }
+
+            .total-widget-darkorange{
+                background-color: #F57F17;
+            }
+
+            .total-widget-dark {
+                background-color: rgba(0, 0, 0, 0.2);
+            }
+
+            .toast-widget-grey{
+                background-color: #5D4037;
+            }
+
+            .toast-widget-green{
+                background-color: #8BC34A;
+            }
+
+            .toast-widget-lime500 {
+                background-color: #CDDC39;
+            }
+
+            .toast-widget-pink400{
+                background-color: #EC407A;
+            }
+
+
+            .toast-widget-purple {
+                background-color: #9C27B0;
+            }
+
+            .toast-widget-darkgreen{
+                background-color: #7CB342;
+            }
+
+            .toast-widget-teal700 {
+                background-color: #00796B;
+            }
+
+            .toast-widget-light-grey{
+                background-color: #E0E0E0;
+            }
+
+            .toast-widget-grey{
+                background-color: #616161;
+            }
+
+            .toast-widget-darkgrey{
+                background-color: #424242;
+            }
+
+            .toast-chart {
+                width: 50%;
+                float: left;
+                padding: 10px 5px 5px;
+                min-height: 80px;
+                max-width: 125px;
+            }
+
+            .toast-details{
+                text-align: center;
+                width: 50%;
+                float: left;
+                margin-top: 20px;
+            }
+
+            .toast-details span{
+                font-size: 32px;
+                line-height: 0.8pt;
+                font-family: 'Roboto', sans-serif;
+                font-weight: 100;
+            }
+            .toast-details small{
+                font-weight: 300;
+            }
+            .toast-details p {
+                font-weight: 300;
+                font-size: 10px;
+                margin-bottom: 15px;
+            }
+
+            .chart-doughnut {
+                max-width: 400px;
+                max-height: 200px;
+            }
+            .panel-body{
+                font-weight: bold;
+                text-align: center;
+            }
+            .icon-preview{
+                border-right: solid 1px white;
+                height: 100px;
+            }
+            .mdi-social-plus-one, .mdi-editor-functions, .mdi-social-people{
+                font-size: 80px;
+            }
+            .panel-body {
+                font-weight: 300;
+                text-align: left;
+                padding: 0;
+                overflow: hidden;
+            }
+            .panel-default{
+                max-height:400px;
+            }
+            .chart-line{
+                max-height: 200px;
+            }
+            .panel-container{
+                margin-top: 20px;
+            }
+
+            #line {
+                width:100%;
+                height:100%;
+                margin-left: -3px;
+            }
+
+            .hero-chart .chart-container {
+                margin-left: -10px;
+                margin-right: -10px;
+                margin-bottom: -10px;
+                margin-top:0;
+            }
+
+            /** CONFIG STYLES **/
+            .config-options .panel-body{
+
+            }
+
+            .config-options label {
+                padding: 10px;
+                font-weight: 100;
+                font-size: smaller;
+            }
+
+            .config-options {
+                margin-top:10px;
+                display: inline-flex;
+            }
+
+            .config-options select{
+                width:100%;
+                color: #fff;
+            }
+
+            .config-options .panel-bottom {
+                min-height: 60px;
+                width: 100%;
+                background-color: rgba(0, 0, 0, 0.2);
+                padding: 10px;
+            }
+            /** END OF CONFIG STYLES **/
+
+            /** DASHBOARD STYLES **/
+            .dashboard {
+                padding:0;
+                font-family: 'Roboto', sans-serif;
+            }
+            .dashboard-list{
+                width:100%; padding:0;
+            }
+
+            .dashboard-list-item{
+                list-style: none;
+                padding: 0.5px;
+                max-height: 201px;
+                overflow: hidden;
+            }
+
+            .dashboard-list-item-inner{
+                min-height: 200px;
+                color: #fff;
+                position: relative;
+            }
+
+            .pass {
+                background-color: #8BC34A;
+            }
+
+            .fail {
+                background-color: #F44336;
+            }
+
+            .general {
+                background-color: #000;
+            }
+
+            .dashboard-success-wrapper {
+                width: 125px;
+                height: 125px;
+                border-radius: 50%;
+                background-color: rgba(0, 0, 0, 0.05);
+                position: absolute;
+                top: 35px;
+                left: 75px;
+            }
+            .dashboard-icon {
+                font-size: 100px;
+                font-weight: bold;
+                color: rgba(0, 0, 0, 0.05);
+                margin-left: 10px;
+                margin-top: 10px;
+            }
+
+            .dashboard-list-item-content{
+                padding: 10px;
+            }
+
+            .dashboard-list-result{
+                display: inline-flex;
+                margin-top: 10%;
+                margin-left: 25%;
+            }
+
+            .result-text{
+                font-size: 48px;
+                margin-left: 10px;
+                margin-right: 10px;
+                margin-bottom: 0;
+                line-height: 0.8;
+            }
+
+            .result-div {
+                position: relative;
+                text-align: center;
+            }
+            /** END OF DASHBOARD STYLES **/
+
+            /** RESULTS VIEW **/
+            .results-container {
+                padding: 0;
+                margin-top: 20px;
+            }
+            .results-review-wrapper {
+                background-color: #fff;
+                min-height: 500px;
+            }
+
+            .results-list-wrapper {
+
+            }
+            /** END OF REUSLTS VIEW **/
+
+            .body-divider{
+                width:100%;
+                position: relative;
+                height: 20px;
+                background-color: #eee;
+                box-shadow: 0 11px 11px #999;
+            }
+
         </style>
     </head>
     <body ng-controller="AdminCtrl" role="document">
@@ -57,9 +331,102 @@
 
             <div class="top" ng-if="!showLogin">
                 <ng-include  src="'admin/directives/partials/Dashboard.html'"></ng-include>
-            </div>
-            <div id="bottom" class="col-md-12 bottom" ng-if="!showLogin">
+                <div class="col-md-12">
+                    <h4 style="margin-left: -15px;margin-bottom: -10px;">Controls</h4>
+                    <div class="config-options">
+                        <!-- interval -->
+                        <div class="panel panel-default toast-widget toast-widget-darkgrey">
+                            <div class="panel-body">
+                                <label class="control-label" for="test-interval-select">Automated Test Interval</label>
+                                <div class="panel-bottom">
+                                    <select id="test-interval-select" class="form-control" ng-model="server.interval" ng-options="opt as opt.name for opt in autointervals track by opt.code">
+                                        <option value="">Select interval</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
 
+                        <!-- svn interval -->
+                        <div class="panel panel-default toast-widget toast-widget-darkgrey">
+                            <div class="panel-body">
+                                <label class="control-label" for="test-interval-select">Automated SVN Update</label>
+                                <div class="panel-bottom">
+                                    <select id="test-interval-select" class="form-control" ng-model="server.svninterval" ng-options="opt as opt.name for opt in autointervals track by opt.code">
+                                        <option value="">Select interval</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- email -->
+                        <div class="panel panel-default toast-widget toast-widget-darkgrey">
+                            <div class="panel-body">
+                                <label class="control-label" for="emailAddr">Notified Email Address</label>
+                                <div class="panel-bottom">
+                                    <input id="emailAddr" class="form-control" ng-model="server.notifiedEmailAddress" placeholder="120 character max" maxlength="140" type="email">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- buttons -->
+                        <div class="panel panel-default toast-widget toast-widget-darkgrey">
+                            <div class="panel-body">
+                                <button type="button" class="btn btn-info" style="width:200px;margin-left:25px">Update SVN Now</button>
+                                <button type="button" class="btn btn-success" style="width:200px;margin-left:25px">Run Test Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- dashboard -->
+                <div id="dashboard" class="col-md-12 dashboard">
+                    <h4>Dashboard</h4>
+                    <ul class="dashboard-list">
+                        <li ng-repeat="component in testCompnentsSummary" class="col-md-3 dashboard-list-item">
+                            <div class="dashboard-list-item-inner" ng-class="{pass : component.passed, fail : !component.passed}">
+                                <!-- background icons -->
+                                <div class="dashboard-success-wrapper">
+                                    <i class="material-icons dashboard-icon" ng-if="component.passed">check</i>
+                                    <i class="material-icons dashboard-icon" ng-if="!component.passed">clear</i>
+                                </div>
+                                <div class="dashboard-list-item-content">
+                                    <div style="width:100%;">
+                                        <p style="float: left">{{component.componentName}}</p>
+                                        <h4 style="float: right">{{component.passed ? 'passed' : 'failed' }}</h4>
+                                    </div>
+                                    <div class="dashboard-list-result">
+                                        <div class="result-div">
+                                            <div class="result-text">{{component.totalPassed}}</div>
+                                            <small>passed</small>
+                                        </div>
+                                        <div class="result-text">/</div>
+                                        <div class="result-div">
+                                            <div class="result-text"> {{component.totalFailed}}</div>
+                                            <small>failed</small>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!--&lt;!&ndash; divider bar &ndash;&gt;-->
+                <!--<div class="body-divider"></div>-->
+
+                <!-- RESULTS -->
+                <div class="results-container col-md-12">
+                    <h4>Results</h4>
+                    <!-- current test -->
+                    <div class="col-md-6 results-review-wrapper">
+
+                    </div>
+                    <!-- recent test -->
+                    <div class="col-md-6 results-list-wrapper">
+
+                    </div>
+                </div>
             </div>
         </div>
 

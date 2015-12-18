@@ -1,88 +1,9 @@
 <div>
-    <style>
-        .toast-container{
-            display: inline-flex;
-        }
-        .toast-widget {
-            margin: 10px;
-            width:100%;
-            min-width: 250px;
-            min-height: 100px;
-            color: white;
-        }
-        .toast-widget-blue{
-            background-color: #00B0FF;
-        }
-
-        .toast-widget-orange{
-            background-color: #FF6D00;
-        }
-
-        .toast-widget-grey{
-            background-color: #5D4037;
-        }
-
-        .toast-widget-green{
-            background-color: #388E3C;
-        }
-
-        .toast-details{
-            text-align: left;
-            padding-top: 10px;
-            padding-right: 0;
-        }
-        .toast-details span{
-            font-size: 32px;
-            line-height: 0.8pt;
-        }
-        .toast-details small{
-            font-weight: 300;
-        }
-        .toast-details p {
-            font-weight: 300;
-            font-size: 10px;
-            margin-top: 10px;
-        }
-
-        .chart-doughnut {
-            max-width: 400px;
-            max-height: 200px;
-        }
-        .panel-body{
-            font-weight: bold;
-            text-align: center;
-        }
-        .icon-preview{
-            border-right: solid 1px white;
-            height: 100px;
-        }
-        .mdi-social-plus-one, .mdi-editor-functions, .mdi-social-people{
-            font-size: 80px;
-        }
-        .panel-body {
-            font-weight: 300;
-            text-align: left;
-        }
-        .panel-default{
-            max-height:300px;
-        }
-        .chart-line{
-            max-height: 200px;
-        }
-        .panel-container{
-            margin-top: 20px;
-        }
-
-        #line {
-            width:100%;
-            height:100%;
-        }
-    </style>
 
     <div class="col-md-12">
         <div class="panel panel-default">
-            <div class="panel-body">
-                <canvas id="line" class="chart chart-line" chart-data="data"
+            <div class="panel-body hero-chart">
+                <canvas id="line" class="chart chart-line chart-xl" chart-data="data" chart-options="heroOptions"
                         chart-labels="labels" chart-legend="false" chart-series="series"
                         chart-click="onClick" >
                 </canvas>
@@ -90,19 +11,18 @@
         </div>
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-12">
         <div class="toast-container">
-            <div class="panel panel-default toast-widget toast-widget-blue">
+            <div class="panel panel-default toast-widget toast-widget-orange">
                 <div class="panel-body">
-
-                    <div class="col-md-6">
-                        <canvas id="pass" class="chart chart-line" chart-data="monthlyPass"
-                                chart-labels="labels" chart-legend="false" chart-series="series"
+                    <div class="toast-chart total-widget-dark">
+                        <canvas id="pass" class="chart chart-bar" chart-data="monthlyPass" chart-options="dashOptions"
+                                chart-labels="labels" chart-legend="false" chart-series="series" chart-colours="dashboardColours"
                                 chart-click="onClick" >
                         </canvas>
                     </div>
 
-                    <div class="col-md-6 toast-details">
+                    <div class="toast-details">
                         <p>Total Pass</p>
                         <span>{{totalPass}}</span>
                     </div>
@@ -110,40 +30,35 @@
                 </div>
             </div>
 
-            <div class="panel panel-default toast-widget toast-widget-orange">
+            <div class="panel panel-default toast-widget toast-widget-grey">
                 <div class="panel-body">
-
-                    <div class="col-md-6">
-                        <canvas id="fail" class="chart chart-line" chart-data="monthlyFail"
-                                chart-labels="labels" chart-legend="false" chart-series="series"
+                    <div class="toast-chart total-widget-dark">
+                        <canvas id="fail" class="chart chart-bar" chart-data="monthlyFail" chart-options="dashOptions"
+                                chart-labels="labels" chart-legend="false" chart-series="series" chart-colours="dashboardColours"
                                 chart-click="onClick" >
                         </canvas>
                     </div>
 
-                    <div class="col-md-6 toast-details">
-                        <p>Total fails</p>
+                    <div class="toast-details">
+                        <p>Total Fail</p>
                         <span>{{totalFail}}</span>
-
                     </div>
+
                 </div>
             </div>
 
-        </div>
-    </div>
-
-    <div class="col-md-6">
-        <div class="toast-container">
-            <div class="panel panel-default toast-widget toast-widget-grey">
+            <div class="panel panel-default toast-widget toast-widget-blue">
                 <div class="panel-body">
-
-                    <div class="icon-preview col-md-6">
-                        <i class="mdi-editor-functions"></i>
+                    <div class="toast-chart total-widget-dark">
+                        <canvas id="screenshots" class="chart chart-line" chart-data="monthlyFail" chart-options="dashOptions"
+                                chart-labels="labels" chart-legend="false" chart-series="series" chart-colours="dashboardColours"
+                                chart-click="onClick" >
+                        </canvas>
                     </div>
 
-                    <div class="col-md-6 toast-details">
-                        <span>{{totalVotes}}</span><br>
-                        <small>Total Votes</small>
-                        <p>Total votes so far in this campaign.</p>
+                    <div class="toast-details">
+                        <p>Total Screenshots</p>
+                        <span>{{totalFail}}</span>
                     </div>
 
                 </div>
@@ -151,21 +66,22 @@
 
             <div class="panel panel-default toast-widget toast-widget-green">
                 <div class="panel-body">
-
-                    <div class="icon-preview col-md-6">
-                        <i class="mdi-social-people"></i>
+                    <div class="toast-chart total-widget-dark">
+                        <canvas id="misc" class="chart chart-line" chart-data="monthlyFail" chart-options="dashOptions"
+                                chart-labels="labels" chart-legend="false" chart-series="series" chart-colours="dashboardColours"
+                                chart-click="onClick" >
+                        </canvas>
                     </div>
 
-                    <div class="col-md-6 toast-details">
-                        <span>{{highestVotingOrigin.total}}</span><br>
-                        <small>{{highestVotingOrigin.name}}</small>
-                        <p>Highest voting city to date.</p>
+                    <div class="toast-details">
+                        <p>Total Miscellaneous</p>
+                        <span>{{totalFail}}</span>
                     </div>
+
                 </div>
             </div>
 
         </div>
-
     </div>
 
 </div>
