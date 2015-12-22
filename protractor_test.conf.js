@@ -4,7 +4,20 @@
 /**
  * Created by Steve Kelly on 20/05/2015
  * for AirNZ
+ *
+ *
+ * NOTES:
+ *
+ * Run protractor suite tests i.e:
+ * protractor protractor_test.conf --suite lff,slider
+ *
+ * All describes should have one word names, i.e:
+ * lff or slider
+ * For two words use underscore i.e:
+ * flights_page_lff
  */
+
+
 // returns duration in seconds
 var getDuration = function(obj) {
     if (!obj._started || !obj._finished) {
@@ -21,56 +34,145 @@ var generateRandomnId = function(){
 var fs = require('fs');
 // var Promise = require('promise');
 var mkdirp = require('mkdirp');
+var path = require("path");
+
+// redis interface
+var redis = require('redis');
+var client = redis.createClient('6379','localhost'); //creates a new client
+
+// Redis Configuration
+client.on('connect', function() {
+    console.log('redis connected');
+});
+// used to capture test start time
+var curTestStartTime = 0;
 
 var gasReporter = {
+    suiteData : {
+        startTime : 0,
+        finishTime : 0
+    },
     jasmineStarted: function(suiteInfo) {
-        console.log('Running suite with ' + suiteInfo.totalSpecsDefined);
+        console.log('************* Running suite with ' + suiteInfo.totalSpecsDefined);
     },
 
     suiteStarted: function(result) {
-        console.log('Suite started: ' + result.description + ' whose full description is: ' + result.fullName);
+        console.log('********* Suite started: ' + result.description + ' whose full description is: ' + result.fullName);
+        curTestStartTime = new Date();
     },
 
     specStarted: function(result) {
-        console.log('Spec started: ' + result.description + ' whose full description is: ' + result.fullName);
+        console.log('************* Spec started: ' + result.description + ' whose full description is: ' + result.fullName);
     },
     specDone: function(result) {
-        if(result.status !== 'passed'){
-            // take screenshot
-            browser.takeScreenshot().then(function (png) {
-                browser.getCapabilities().then(function (capabilities) {
-                    var browserName = caps.caps_.browserName.toUpperCase();
-                    var screenshotPath = path.join('reports/' + browserName+'_reports', spec.filename);
-                    console.log('screenshotPath is '+screenshotPath);
+        // iterate and handle failed results
+        protractor.promise.all(result.failedExpectations.map(function(failedResult){
+            console.log('******** INSIDE PROMISE ***********');
+                    // take screenshot
+                    browser.takeScreenshot().then(function (png) {
+                        console.log('taking screenshot');
+                        browser.getCapabilities().then(function (capabilities) {
+                            var browserName = capabilities.caps_.browserName.toUpperCase();
+                            var fileName = result.description + '_' + new Date().toUTCString()+ '.png';
+                            var screenshotPath = path.join('reports/' + browserName+'_reports', fileName);
+                            console.log('************** screenshotPath is '+screenshotPath);
 
-                    mkdirp(path.dirname(screenshotPath), function(err) {
-                        if(err) {
-                            throw new Error('Could not create directory for ' + screenshotPath);
-                        }
-                        var stream = fs.createWriteStream('reports/' + browserName+'_reports' + spec.filename);
-                        stream.write(new Buffer(png, 'base64'));
-                        stream.end();
+                            mkdirp(path.dirname(screenshotPath), function(err) {
+                                if(err) {
+                                    throw new Error('Could not create directory for ' + screenshotPath);
+                                }
+                                var stream = fs.createWriteStream('reports/' + browserName+'_reports' + fileName);
+                                stream.write(new Buffer(png, 'base64'));
+                                stream.end();
+                            });
+                        });
                     });
-                });
-            });
-        }
-        console.log('Spec: ' + result.description + ' was ' + result.status);
-        for(var i = 0; i < result.failedExpectations.length; i++) {
-            console.log('Failure: ' + result.failedExpectations[i].message);
-            console.log(result.failedExpectations[i].stack);
-        }
-        console.log('result.passedExpectations: '+result.passedExpectations.length);
+            console.log('******** END OF PROMISE ***********');
+        })).then(function(res){
+            // add date to result
+            result['date'] = new Date().toDateString();
+            result['time'] = new Date().toTimeString();
+            result['id'] = result['fullName'].split(' ')[0];
 
+            // get test time
+            var duration = (new Date() - curTestStartTime) / 1000;
+            result['duration'] = duration;//(duration < 1) ? duration : Math.round(duration);
+
+            // Check keys exist
+            // if not add them
+            client.exists('totalPassed', function(err, reply) {
+                if (reply !== 1) {
+                    client.set('totalPassed',0, function (err, res) {
+                        if(err){console.log(err);}
+                        if(res){
+                            console.log('totalPassed' + ' ' + res);
+                        }
+                    });
+                }
+            });
+
+            client.exists('totalFailed', function(err, reply) {
+                if (reply !== 1) {
+                    client.set('totalFailed',0, function (err, res) {
+                        if(err){console.log(err);}
+                        if(res){
+                            console.log('totalFailed' + ' ' + res);
+                        }
+                    });
+                }
+            });
+
+            // increment keys
+            if(result.passedExpectations && result.failedExpectations){
+                // pass / fail history
+                var passItem = {
+                    'passes' : result.passedExpectations.length.toString(),
+                    'date' : new Date().toDateString()
+                };
+                var failItem = {
+                    'fails' : result.passedExpectations.length.toString(),
+                    'date' : new Date().toDateString()
+                };
+                var durationItem = {
+                    'duration' : duration.toString(),
+                    'date' : new Date().toDateString()
+                };
+
+                client.multi()
+                    .incrby('totalPassed',result.passedExpectations.length)
+                    .incrby('totalFailed',result.failedExpectations.length)
+                    .sadd(['passHistory',JSON.stringify( passItem )])
+                    .sadd(['failHistory',JSON.stringify( failItem )])
+                    .sadd(['testDurations',JSON.stringify( durationItem )])
+                    .exec(function(err,replies){
+                        if(err){
+                            console.log("err="+err);
+                        }
+                        console.log('reply is '+replies);
+
+                    });
+            }
+            // do stuff
+            console.log('protractor.promise.all finished: '+JSON.stringify(result));
+            var session_arr = [
+                "type:suite",JSON.stringify(result)
+            ];
+
+            client.sadd(session_arr, function (err, res) {
+                if(err){
+                    console.log(err);
+                }
+                if(res){
+                    console.log('added: '+res);
+                }
+            });
+        });
     },
     suiteDone: function(result) {
-        console.log('Suite: ' + result.description + ' was ' + result.status);
-        for(var i = 0; i < result.failedExpectations.length; i++) {
-            console.log('AfterAll ' + result.failedExpectations[i].message);
-            console.log(result.failedExpectations[i].stack);
-        }
+        console.log('Suite: ' + JSON.stringify(result));
     },
     jasmineDone: function() {
-        console.log('Finished suite');
+        console.log('************* Finished suite');
     }
 
 };
@@ -84,10 +186,6 @@ exports.config = {
     seleniumPort: 4444,
     seleniumArgs: ['-browserTimeout=60'],
     troubleshoot: true,
-    //directConnect: true,
-    //chromeOnly: true,
-    //chromeDriver: 'C:\Users\kells4.ISIS\AppData\Roaming\npm\node_modules\protractor\selenium\chromedriver',
-
     baseUrl: 'grabaseat.co.nz',
 
     multiCapabilities: [
@@ -107,8 +205,8 @@ exports.config = {
         //    // set magic proxy
         //    proxy: {
         //        proxyType: 'manual',
-        //        httpProxy: '10.65.61.156:3128',
-        //        sslProxy: '10.65.61.156:3128'
+        //        httpProxy: '10.65.61.157:3128',
+        //        sslProxy: '10.65.61.157:3128'
         //    }
         // },
         //{
@@ -128,7 +226,14 @@ exports.config = {
     // Spec patterns are relative to the configuration file location passed
     // to proractor (in this example conf.js).
     // They may include glob patterns.
-    specs: ['tests/LFF_Main_Crtl_Spec.js'],
+    suites: {
+        sca : 'tests/sca/SCA_Main_Crtl_Spec.js',
+        login : 'tests/header/Header_Login_Crtl_Spec.js',
+        header : 'tests/header/Header_Nav_Crtl_Spec.js',
+        ad : 'tests/ad/ThirdPartyAds_Crtl_Spec.js',
+        lff : 'tests/lff/LFF_Main_Crtl_Spec.js',
+        slider : 'tests/slider/Slider_Main_Crtl_Spec.js'
+    },
     //specs: ['../@static@/common/js/app/widgets/lff/e2e/LFF_Main_Crtl_Spec.js'],
 
     framework: 'jasmine2',
@@ -145,54 +250,8 @@ exports.config = {
 
     onPrepare: function() {
         jasmine.getEnv().addReporter(gasReporter);
-        // jasmine.getEnv().addReporter(new HtmlScreenshotReporter({
-        //    dest: 'reports/' + browserName+'_reports',
-        //    filename: browserName+'_report.html',
-        //    reportOnlyFailedSpecs: true,
-        // 			   captureOnlyFailedSpecs: true,
-        // 			   metadataBuilder: function(currentSpec, suites, browserCapabilities) {
-        // 			   		console.log('************************************');
-        // 			   		console.log('inside metadataBuilder');
-        // 			   		console.log('************************************');
-        //    					//return { id: currentSpec.id, os: browserCapabilities.get('browserName') };
-        // 			   }
-        //   }));
-        //  	});
     },
 
     onComplete: function(runner, log) {
-        // console.log('*** 1. PREPARING TO SEND EMAIL ***');
-        // browser.driver.getSession().then(function(session) {
-
-        //    			console.log("SauceOnDemandSessionID=" + session.getId() + " job-name=Web - My Account - Address Update");
-        //  		});
-        //       var htmlContent = null;
-        //       var proceed = true;
-        //       var browserName = '';
-        //       var browserVersion = '';
-
-        //       // get capabilites
-        //  		var browserPromise = browser.getCapabilities();
-
-        //  		browserPromise.then( function(caps){
-
-        //   		browserName = caps.caps_.browserName.toUpperCase();
-        //           browserVersion = caps.caps_.version;
-
-        //           var reportDir = 'reports/' + browserName + '_reports';
-
-        //           // get html content for email
-        //           htmlContent = retrieveHMTLContent('reports/' + browserName+'_reports/' + browserName+'_report.html');
-
-        //           // zip up report
-        //           //zipUpReport(reportDir,browserName);
-
-        //     // timeout due to delay in processing fs and easyzip
-        //     setTimeout(function() {
-        //     	//emailReport(htmlContent, browserName, browserVersion);
-        //     	//cleanupFolders(browserName);
-        //     },2000);
-
-        //      	});
     }
 };

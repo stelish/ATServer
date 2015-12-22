@@ -132,78 +132,11 @@ app.controller('AdminCtrl',['$scope','$http','$filter',function($scope,$http,$fi
     ];
 
     $scope.testCompnentsSummary = [
-        {
-            "componentName" : "layout",
-            "passed" : false,
-            "totalPassed" : 2,
-            "totalFailed" : 1,
-            "results" : [
-                {
-                    "testDesciption" : "should slideout",
-                    "passed" : false,
-                    "screenshot" : false,
-                    "screenshotFilename" : ''
-                }
-            ]
-        },
-        {
-            "componentName" : "lff",
-            "passed" : true,
-            "totalPassed" : 3,
-            "totalFailed" : 0,
-            "results" : [
-                {
-                    "testDesciption" : "should hide lff",
-                    "passed" : true,
-                    "screenshot" : false,
-                    "screenshotFilename" : ''
-                }
-            ]
-        },
-        {
-            "componentName" : "sca",
-            "passed" : false,
-            "totalPassed" : 1,
-            "totalFailed" : 1,
-            "results" : [
-            ]
-        },
-        {
-            "componentName" : "gld",
-            "passed" : true,
-            "totalPassed" : 2,
-            "totalFailed" : 0,
-            "results" : [
-            ]
-        },
-        {
-            "componentName" : "sh",
-            "passed" : true,
-            "totalPassed" : 1,
-            "totalFailed" : 0,
-            "results" : [
-            ]
-        },
-        {
-            "componentName" : "flavabar",
-            "passed" : true,
-            "totalPassed" : 5,
-            "totalFailed" : 0,
-            "results" : [
-            ]
-        },
-        {
-            "componentName" : "login",
-            "passed" : true,
-            "totalPassed" : 2,
-            "totalFailed" : 0,
-            "results" : [
-            ]
-        }
     ];
 
     $scope.totalPass = 0;
     $scope.totalFail = 0;
+    $scope.currentTestTime = 10.69;
 
     $scope.sortData = function(){
         var _monthlyPass = [];
@@ -211,8 +144,8 @@ app.controller('AdminCtrl',['$scope','$http','$filter',function($scope,$http,$fi
         for(var i = 0; i < $scope.monthlyData.length; i++){
             var obj = $scope.monthlyData[i];
             $scope.labels.push(obj.date);
-            $scope.totalPass += obj.pass;
-            $scope.totalFail += obj.fail;
+            //$scope.totalPass += obj.pass;
+            //$scope.totalFail += obj.fail;
             _monthlyPass.push(obj.pass);
             _monthlyFail.push(obj.fail);
         }
@@ -239,12 +172,27 @@ app.controller('AdminCtrl',['$scope','$http','$filter',function($scope,$http,$fi
         }
     };
 
+    $scope.calculateDurationAverage = function(data){
+
+    };
+
     $scope.init = function(){
         var ccadminCookie = getCookie('ccadmin');
         if(ccadminCookie){
             $scope.showLogin = false;
         }
         $scope.sortData();
+
+        // get dashboard data
+        $http.get('https://localhost/api/getDashBoardData').then(function(res){
+            $scope.testCompnentsSummary = res.data;
+        });
+
+        $http.get('https://localhost/api/getDashboardTotals').then(function(res){
+            $scope.totalPass = res.data.totalPassed;
+            $scope.totalFail = res.data.totalFailed;
+            $scope.totalScreenshots = res.data.totalScreenshots;
+        });
     };
 
     $scope.init();

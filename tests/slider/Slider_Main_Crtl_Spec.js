@@ -3,7 +3,7 @@
  * Created by Steve Kelly on 21/05/2015
  * for AirNZ
  */
-describe('Slider e2e test', function () {
+describe('Slider', function () {
     var hasClass = function (element, cls) {
         return element.getAttribute('class').then(function (classes) {
             return classes.split(' ').indexOf(cls) !== -1;
@@ -21,7 +21,7 @@ describe('Slider e2e test', function () {
     var hamBtn = element(by.id('hamburgerBtn'));
     var mainBody = element(by.id('body-content-wrapper'));
 
-    it('should slideout', function () {
+    it(' - should slideout', function () {
         hamBtn.click();
         expect(hasClass(mainBody,'contentSlideout')).toBe(true);
     });

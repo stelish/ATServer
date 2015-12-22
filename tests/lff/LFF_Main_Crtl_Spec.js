@@ -4,7 +4,7 @@
  * for AirNZ
  */
 
-describe('LFF Main Test', function () {
+describe('LFF', function () {
     var toggleBtn;
 
     beforeEach(function() {
@@ -14,7 +14,7 @@ describe('LFF Main Test', function () {
 
     it('should hide lff', function () {
         toggleBtn = element(by.id('lff-toggle-btn')) || null;
-        expect(toggleBtn).not.toBeNull();
+        expect(toggleBtn).not.toBe(null);
         // collapse
         toggleBtn.click();
         expect(element(by.id('lffContentWrapper')).children()).toBeGreaterThan();
@@ -23,4 +23,8 @@ describe('LFF Main Test', function () {
         toggleBtn.click();
         expect(element(by.id('lff-wrapper')).children()).toBeGreaterThan();
     });
+
+    afterEach(function(){
+    });
+
 });

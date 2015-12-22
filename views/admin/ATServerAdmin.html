@@ -331,6 +331,58 @@
 
             <div class="top" ng-if="!showLogin">
                 <ng-include  src="'admin/directives/partials/Dashboard.html'"></ng-include>
+
+
+                <!-- dashboard -->
+                <div id="dashboard" class="col-md-12 dashboard">
+                    <h4>Dashboard</h4>
+                    <ul class="dashboard-list">
+                        <li ng-repeat="component in testCompnentsSummary" class="col-md-3 dashboard-list-item">
+                            <div class="dashboard-list-item-inner" ng-class="{pass : component.status == 'passed', fail : component.status != 'passed'}">
+                                <!-- background icons -->
+                                <div class="dashboard-success-wrapper">
+                                    <i class="material-icons dashboard-icon" ng-if="component.status == 'passed'">check</i>
+                                    <i class="material-icons dashboard-icon" ng-if="component.status != 'passed'">clear</i>
+                                </div>
+                                <div class="dashboard-list-item-content">
+                                    <div style="width:100%;">
+                                        <p style="float: left">{{component.id}}</p>
+                                        <h4 style="float: right">{{component.status == 'passed' ? 'passed' : 'failed' }}</h4>
+                                    </div>
+                                    <div class="dashboard-list-result">
+                                        <div class="result-div">
+                                            <div class="result-text">{{component.passedExpectations.length}}</div>
+                                            <small>passed</small>
+                                        </div>
+                                        <div class="result-text">/</div>
+                                        <div class="result-div">
+                                            <div class="result-text"> {{component.failedExpectations.length}}</div>
+                                            <small>failed</small>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!--&lt;!&ndash; divider bar &ndash;&gt;-->
+                <!--<div class="body-divider"></div>-->
+
+                <!-- RESULTS -->
+                <div class="results-container col-md-12">
+                    <h4>Results</h4>
+                    <!-- current test -->
+                    <div class="col-md-6 results-review-wrapper">
+
+                    </div>
+                    <!-- recent test -->
+                    <div class="col-md-6 results-list-wrapper">
+
+                    </div>
+                </div>
+
                 <div class="col-md-12">
                     <h4 style="margin-left: -15px;margin-bottom: -10px;">Controls</h4>
                     <div class="config-options">
@@ -375,56 +427,6 @@
                                 <button type="button" class="btn btn-success" style="width:200px;margin-left:25px">Run Test Now</button>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <!-- dashboard -->
-                <div id="dashboard" class="col-md-12 dashboard">
-                    <h4>Dashboard</h4>
-                    <ul class="dashboard-list">
-                        <li ng-repeat="component in testCompnentsSummary" class="col-md-3 dashboard-list-item">
-                            <div class="dashboard-list-item-inner" ng-class="{pass : component.passed, fail : !component.passed}">
-                                <!-- background icons -->
-                                <div class="dashboard-success-wrapper">
-                                    <i class="material-icons dashboard-icon" ng-if="component.passed">check</i>
-                                    <i class="material-icons dashboard-icon" ng-if="!component.passed">clear</i>
-                                </div>
-                                <div class="dashboard-list-item-content">
-                                    <div style="width:100%;">
-                                        <p style="float: left">{{component.componentName}}</p>
-                                        <h4 style="float: right">{{component.passed ? 'passed' : 'failed' }}</h4>
-                                    </div>
-                                    <div class="dashboard-list-result">
-                                        <div class="result-div">
-                                            <div class="result-text">{{component.totalPassed}}</div>
-                                            <small>passed</small>
-                                        </div>
-                                        <div class="result-text">/</div>
-                                        <div class="result-div">
-                                            <div class="result-text"> {{component.totalFailed}}</div>
-                                            <small>failed</small>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-
-                <!--&lt;!&ndash; divider bar &ndash;&gt;-->
-                <!--<div class="body-divider"></div>-->
-
-                <!-- RESULTS -->
-                <div class="results-container col-md-12">
-                    <h4>Results</h4>
-                    <!-- current test -->
-                    <div class="col-md-6 results-review-wrapper">
-
-                    </div>
-                    <!-- recent test -->
-                    <div class="col-md-6 results-list-wrapper">
-
                     </div>
                 </div>
             </div>

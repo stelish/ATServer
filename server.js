@@ -15,6 +15,7 @@ var https = require('https');
 var app = express(); // the main app
 var path = require('path');
 var fs         = require("fs");
+var Promise = require('promise');
 
 
     var key_file   = "server/certs/server.key";
@@ -77,24 +78,85 @@ app.route('/admin')
 app.route('/api/:call')
     .get(function(req, res) {
         console.log('API GET request: '+req.params.call);
-        var sessVotes = [];
-        function getOriginVotes(sessionid,id){
-            var orgSess = "type:votes:"+sessionid+':origin'+id;
-            var result = 0;
-            if(client.connected){
-                client.get(orgSess,function(err,reply){
-                    if(err){console.log(err);}
-                    if(reply){
-                        console.log(reply);
-                        sessVotes.push(reply);
-                    }
-                });
-            }
-
-            return result;
-        }
 
         switch( req.params.call ){
+            case 'getDashboardTotals':
+                client.multi()
+                    .get('totalPassed')
+                    .get('totalFailed')
+                    .get('totalScreenshots')
+                    .smembers('passHistory')
+                    .smembers('failHistory')
+                    .smembers('testDurations')
+                    .exec(function(err,results){
+                        if(err){
+                            console.log(err);
+                        }
+                        console.log('results: '+results);
+                        var totals = {
+                            'totalPassed' : results[0],
+                            'totalFailed' : results[1],
+                            'totalScreenshots' : results[2],
+                            'passHistory' : JSON.stringify(results[3]),
+                            'failHistory' : JSON.stringify(results[4]),
+                            'durationHistory' : JSON.stringify(results[5])
+                        };
+                        res.send(totals);
+                    });
+                break;
+        /**
+         * Gets latest result data for dash board, and formats it as follows:
+         *
+         * {
+            "componentName" : "layout",
+            "status" : "failed",
+            "failedExpectations" : [
+            ],
+            "passedExpectations" : [
+            ]
+           }
+         */
+            case 'getDashBoardData':
+                client.smembers("type:suite", function (err,obj) {
+                    if(err){
+                        console.log('got error: '+err);
+                    }
+                    //console.log('got obj: '+obj);
+                    console.log('obj type is : '+typeof obj);
+                    var keys = [];
+                    if(obj && obj.length > 0){
+
+                        Promise.all(obj.map(function(suite){
+                            console.log('suite type is : '+typeof suite);
+                            console.log('suite is '+suite);
+                            suite = JSON.parse(suite);
+                            // quick way to check for match
+                            var stringifiedKeys = JSON.stringify(keys);
+                            if(stringifiedKeys.indexOf(suite.id) != -1){
+                                // contains so iterate
+                                for(var i=0; i < keys.length; i++){
+                                    if(keys[i].id == suite.id){
+                                        // check date is later then existing
+                                        if(keys[i].time < suite.time){
+                                            keys[i] = suite;
+                                        }
+                                    }
+                                }
+                            }else{
+                                // does not contain suite so add it
+                                console.log('pushing suite');
+                                keys.push(suite);
+                            }
+                        }))
+                        .then(function(res){
+                                console.log('keys is '+JSON.stringify(keys));
+
+                        });
+                    }
+                    res.send( JSON.stringify(keys) );
+                });
+                break;
+
             case 'getAllReports':
                 client.smembers("type:reports", function (err, obj) {
                     var result = [];
@@ -115,8 +177,9 @@ app.route('/api/:call')
          * Thie method will return the session that start time <= server time,
          * AND ent time > server time + offset hours
          */
+
             case 'getCurrentSession':
-                client.smembers("type:session", function (err, obj) {
+                client.smembers("type:suite", function (err, obj) {
                     var result = [];
                     if(obj && obj.length > 0){
                         // parse data
