@@ -229,7 +229,7 @@ exports.config = {
     suites: {
         sca : 'tests/sca/SCA_Main_Crtl_Spec.js',
         login : 'tests/header/Header_Login_Crtl_Spec.js',
-        header : 'tests/header/Header_Nav_Crtl_Spec.js',
+        nav : 'tests/header/Header_Nav_Crtl_Spec.js',
         ad : 'tests/ad/ThirdPartyAds_Crtl_Spec.js',
         lff : 'tests/lff/LFF_Main_Crtl_Spec.js',
         slider : 'tests/slider/Slider_Main_Crtl_Spec.js'
