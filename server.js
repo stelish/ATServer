@@ -92,15 +92,28 @@ app.route('/api/:call')
                         if(err){
                             console.log(err);
                         }
-                        console.log('results: '+results);
+
+                        // get duration avg
+                        var durHistory = results[5];
+                        var durTotal = 0;
+                        for(var i=0; i < durHistory.length; i++){
+                            var obj = JSON.parse(durHistory[i]);
+                            durTotal += new Number(obj["duration"]);
+                        }
+                        var averagedDuration = durTotal / durHistory.length;
+
+                        // set return obj
                         var totals = {
                             'totalPassed' : results[0],
                             'totalFailed' : results[1],
                             'totalScreenshots' : results[2],
                             'passHistory' : JSON.stringify(results[3]),
                             'failHistory' : JSON.stringify(results[4]),
-                            'durationHistory' : JSON.stringify(results[5])
+                            'durationHistory' : JSON.stringify(results[5]),
+                            'durationAverage' : averagedDuration.toFixed(2),
+                            'totalTestTime' : durTotal.toFixed(2)
                         };
+
                         res.send(totals);
                     });
                 break;

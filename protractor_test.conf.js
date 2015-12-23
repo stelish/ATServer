@@ -127,15 +127,15 @@ var gasReporter = {
                 // pass / fail history
                 var passItem = {
                     'passes' : result.passedExpectations.length.toString(),
-                    'date' : new Date().toDateString()
+                    'date' : new Date().toUTCString()
                 };
                 var failItem = {
                     'fails' : result.passedExpectations.length.toString(),
-                    'date' : new Date().toDateString()
+                    'date' : new Date().toUTCString()
                 };
                 var durationItem = {
                     'duration' : duration.toString(),
-                    'date' : new Date().toDateString()
+                    'date' : new Date().toUTCString()
                 };
 
                 client.multi()

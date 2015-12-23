@@ -78,6 +78,10 @@ app.controller('AdminCtrl',['$scope','$http','$filter',function($scope,$http,$fi
 
     $scope.labels = [];
     $scope.series = ['pass', 'fail'];
+    $scope.durationSeries = ['duration'];
+    $scope.durationLabels = [];
+    $scope.durationData = [
+    ];
     $scope.data = [];
 
     $scope.server = {};
@@ -103,16 +107,6 @@ app.controller('AdminCtrl',['$scope','$http','$filter',function($scope,$http,$fi
     ];
 
     $scope.monthlyData = [
-        { "date" : 'jan',"pass" : 65,"fail" : 32},
-        { "date" : 'feb',"pass" : 43,"fail" : 21 },
-        { "date" : 'mar',"pass" : 70,"fail" : 11 },
-        { "date" : 'apr',"pass" : 23,"fail" : 80 },
-        { "date" : 'jun',"pass" : 11,"fail" : 99},
-        { "date" : 'jul',"pass" : 65,"fail" : 32},
-        { "date" : 'aug',"pass" : 43,"fail" : 21 },
-        { "date" : 'sep',"pass" : 70,"fail" : 11 },
-        { "date" : 'oct',"pass" : 23,"fail" : 80 },
-        { "date" : 'nov',"pass" : 11,"fail" : 99},
     ];
 
     $scope.ATTestSummary = [
@@ -124,11 +118,9 @@ app.controller('AdminCtrl',['$scope','$http','$filter',function($scope,$http,$fi
         {"date" : '30 Nov 2015', "time" : '5:05pm', "result" : 'pass', "id" : 'AA8765AD9FF9086FS96SF', "testTime" : 40}
     ];
 
-    $scope.monthlyPass = [
-        [65,43,70,23,11,65,43,70]
+    $scope.totalPassData = [
     ];
-    $scope.monthlyFail = [
-        [32,21,11,80,99,32,21,11]
+    $scope.totalFailData = [
     ];
 
     $scope.testCompnentsSummary = [
@@ -137,23 +129,6 @@ app.controller('AdminCtrl',['$scope','$http','$filter',function($scope,$http,$fi
     $scope.totalPass = 0;
     $scope.totalFail = 0;
     $scope.currentTestTime = 10.69;
-
-    $scope.sortData = function(){
-        var _monthlyPass = [];
-        var _monthlyFail = [];
-        for(var i = 0; i < $scope.monthlyData.length; i++){
-            var obj = $scope.monthlyData[i];
-            $scope.labels.push(obj.date);
-            //$scope.totalPass += obj.pass;
-            //$scope.totalFail += obj.fail;
-            _monthlyPass.push(obj.pass);
-            _monthlyFail.push(obj.fail);
-        }
-        $scope.data.push(_monthlyPass);
-        $scope.data.push(_monthlyFail);
-        $scope.monthlyPass.push(_monthlyPass);
-        $scope.monthlyFail.push(_monthlyFail);
-    };
 
     $scope.onClick = function (points, evt) {
         console.log(points, evt);
@@ -172,8 +147,41 @@ app.controller('AdminCtrl',['$scope','$http','$filter',function($scope,$http,$fi
         }
     };
 
-    $scope.calculateDurationAverage = function(data){
+    //set Hero data
+    $scope.setHeroData = function(passData,failData){
+        var passes = [];
+        var fails = [];
+        var parsedPassData = JSON.parse(passData);
+        var parsedFailData = JSON.parse(failData);
+        for(var n=0; n < parsedPassData.length; n++){
+            var passobj = JSON.parse(parsedPassData[n]);
+            passes.push(passobj.passes);
+            $scope.labels.push(passobj.date);
+        }
+        for(var i=0; i < parsedFailData.length; i++){
+            var failobj = JSON.parse(parsedFailData[i]);
+            fails.push(failobj.fails);
+        }
+        $scope.data.push(passes);
+        $scope.data.push(fails);
+        $scope.totalPassData.push(passes);
+        $scope.totalFailData.push(fails);
+    };
 
+
+    // sets duration data
+    $scope.setDurationData = function(data,avg){
+        $scope.currentTestTime = avg;
+        var durations = JSON.parse(data);
+        var durData = [];
+        for(var i=0; i < durations.length; i++){
+            var dur = JSON.parse(durations[i]);
+            durData.push(new Number(dur.duration).toFixed(2));
+            $scope.durationLabels.push(dur.date);
+        }
+        // add to data
+        $scope.durationData.push(durData);
+        console.log('sup');
     };
 
     $scope.init = function(){
@@ -181,7 +189,6 @@ app.controller('AdminCtrl',['$scope','$http','$filter',function($scope,$http,$fi
         if(ccadminCookie){
             $scope.showLogin = false;
         }
-        $scope.sortData();
 
         // get dashboard data
         $http.get('https://localhost/api/getDashBoardData').then(function(res){
@@ -192,6 +199,8 @@ app.controller('AdminCtrl',['$scope','$http','$filter',function($scope,$http,$fi
             $scope.totalPass = res.data.totalPassed;
             $scope.totalFail = res.data.totalFailed;
             $scope.totalScreenshots = res.data.totalScreenshots;
+            $scope.setHeroData(res.data.passHistory,res.data.failHistory);
+            $scope.setDurationData(res.data.durationHistory,res.data.durationAverage);
         });
     };
 

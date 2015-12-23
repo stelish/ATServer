@@ -13,10 +13,10 @@
 
     <div class="col-md-12">
         <div class="toast-container">
-            <div class="panel panel-default toast-widget toast-widget-orange">
+            <div class="panel panel-default toast-widget toast-widget-orange" style="max-height: 80px">
                 <div class="panel-body">
                     <div class="toast-chart total-widget-dark">
-                        <canvas id="pass" class="chart chart-bar" chart-data="monthlyPass" chart-options="dashOptions"
+                        <canvas id="pass" class="chart chart-bar" chart-data="totalPassData" chart-options="dashOptions"
                                 chart-labels="labels" chart-legend="false" chart-series="series" chart-colours="dashboardColours"
                                 chart-click="onClick" >
                         </canvas>
@@ -30,10 +30,10 @@
                 </div>
             </div>
 
-            <div class="panel panel-default toast-widget toast-widget-grey">
+            <div class="panel panel-default toast-widget toast-widget-grey" style="max-height: 80px">
                 <div class="panel-body">
                     <div class="toast-chart total-widget-dark">
-                        <canvas id="fail" class="chart chart-bar" chart-data="monthlyFail" chart-options="dashOptions"
+                        <canvas id="fail" class="chart chart-bar" chart-data="totalFailData" chart-options="dashOptions"
                                 chart-labels="labels" chart-legend="false" chart-series="series" chart-colours="dashboardColours"
                                 chart-click="onClick" >
                         </canvas>
@@ -47,7 +47,7 @@
                 </div>
             </div>
 
-            <div class="panel panel-default toast-widget toast-widget-blue">
+            <div class="panel panel-default toast-widget toast-widget-blue" style="max-height: 80px">
                 <div class="panel-body">
                     <div class="toast-chart total-widget-dark">
                         <canvas id="screenshots" class="chart chart-line" chart-data="monthlyFail" chart-options="dashOptions"
@@ -64,17 +64,17 @@
                 </div>
             </div>
 
-            <div class="panel panel-default toast-widget toast-widget-green">
+            <div class="panel panel-default toast-widget toast-widget-green" style="max-height: 80px">
                 <div class="panel-body">
                     <div class="toast-chart total-widget-dark">
-                        <canvas id="misc" class="chart chart-line" chart-data="monthlyFail" chart-options="dashOptions"
-                                chart-labels="labels" chart-legend="false" chart-series="series" chart-colours="dashboardColours"
+                        <canvas id="misc" class="chart chart-line" chart-data="durationData" chart-options="dashOptions"
+                                chart-labels="durationLabels" chart-legend="false" chart-series="durationSeries" chart-colours="dashboardColours"
                                 chart-click="onClick" >
                         </canvas>
                     </div>
 
                     <div class="toast-details">
-                        <p>Latest Test Time</p>
+                        <p>Average Test Time</p>
                         <span>{{currentTestTime}}</span>
                     </div>
 
