@@ -147,12 +147,26 @@ app.controller('AdminCtrl',['$scope','$http','$filter',function($scope,$http,$fi
         }
     };
 
+    // clears model data on refresh
+    $scope.clearModels = function(){
+        $scope.data.length = 0;
+        $scope.totalPassData.length = 0;
+        $scope.totalFailData.length = 0;
+
+        // clear duration data
+        $scope.durationData.length = 0;
+        $scope.durationLabels.length = 0;
+    };
+
     //set Hero data
     $scope.setHeroData = function(passData,failData){
         var passes = [];
         var fails = [];
         var parsedPassData = JSON.parse(passData);
         var parsedFailData = JSON.parse(failData);
+        // clear label data
+        $scope.labels.length = 0;
+        // set model
         for(var n=0; n < parsedPassData.length; n++){
             var passobj = JSON.parse(parsedPassData[n]);
             passes.push(passobj.passes);
@@ -162,6 +176,9 @@ app.controller('AdminCtrl',['$scope','$http','$filter',function($scope,$http,$fi
             var failobj = JSON.parse(parsedFailData[i]);
             fails.push(failobj.fails);
         }
+
+        $scope.clearModels();
+
         $scope.data.push(passes);
         $scope.data.push(fails);
         $scope.totalPassData.push(passes);
@@ -184,17 +201,13 @@ app.controller('AdminCtrl',['$scope','$http','$filter',function($scope,$http,$fi
         console.log('sup');
     };
 
-    $scope.init = function(){
-        var ccadminCookie = getCookie('ccadmin');
-        if(ccadminCookie){
-            $scope.showLogin = false;
-        }
-
+    $scope.getData = function(){
         // get dashboard data
         $http.get('https://localhost/api/getDashBoardData').then(function(res){
             $scope.testCompnentsSummary = res.data;
         });
 
+        // get totals
         $http.get('https://localhost/api/getDashboardTotals').then(function(res){
             $scope.totalPass = res.data.totalPassed;
             $scope.totalFail = res.data.totalFailed;
@@ -202,6 +215,16 @@ app.controller('AdminCtrl',['$scope','$http','$filter',function($scope,$http,$fi
             $scope.setHeroData(res.data.passHistory,res.data.failHistory);
             $scope.setDurationData(res.data.durationHistory,res.data.durationAverage);
         });
+    };
+
+    $scope.init = function(){
+        $scope.getData();
+        var ccadminCookie = getCookie('ccadmin');
+        if(ccadminCookie){
+            $scope.showLogin = false;
+        }
+
+        setTimeout($scope.getData,30000);
     };
 
     $scope.init();

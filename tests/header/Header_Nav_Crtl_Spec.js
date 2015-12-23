@@ -38,29 +38,31 @@ describe('Header', function() {
 
     // destination drop downs
     it('destination dropdowns to be correct',function(){
-        element.all(by.repeater('dest in destinations')).then(function(dests) {
-            expect(dests[0].element(by.css('.destination a')).getInnerHtml() ).toContain('Auckland');
-            expect(dests[1].element(by.css('.destination a')).getInnerHtml() ).toContain('Blenheim');
-            expect(dests[2].element(by.css('.destination a')).getInnerHtml() ).toContain('Christchurch');
-            expect(dests[3].element(by.css('.destination a')).getInnerHtml() ).toContain('Dunedin');
-            expect(dests[4].element(by.css('.destination a')).getInnerHtml() ).toContain('Gisborne');
-            expect(dests[5].element(by.css('.destination a')).getInnerHtml() ).toContain('Hamilton');
-            expect(dests[6].element(by.css('.destination a')).getInnerHtml() ).toContain('Hokitika');
-            expect(dests[7].element(by.css('.destination a')).getInnerHtml() ).toContain('Invercargill');
-            expect(dests[8].element(by.css('.destination a')).getInnerHtml() ).toContain('Kerikeri');
-            expect(dests[9].element(by.css('.destination a')).getInnerHtml() ).toContain('Napier Hastings');
-            expect(dests[10].element(by.css('.destination a')).getInnerHtml() ).toContain('Nelson');
-            expect(dests[11].element(by.css('.destination a')).getInnerHtml() ).toContain('New Plymouth');
-            expect(dests[12].element(by.css('.destination a')).getInnerHtml() ).toContain('Palmerston North');
-            expect(dests[13].element(by.css('.destination a')).getInnerHtml() ).toContain('Paraparaumu');
-            expect(dests[14].element(by.css('.destination a')).getInnerHtml() ).toContain('Queenstown');
-            expect(dests[15].element(by.css('.destination a')).getInnerHtml() ).toContain('Rotorua');
-            expect(dests[16].element(by.css('.destination a')).getInnerHtml() ).toContain('Taupo');
-            expect(dests[17].element(by.css('.destination a')).getInnerHtml() ).toContain('Tauranga');
-            expect(dests[18].element(by.css('.destination a')).getInnerHtml() ).toContain('Timaru');
-            expect(dests[20].element(by.css('.destination a')).getInnerHtml() ).toContain('Wellington');
-            expect(dests[19].element(by.css('.destination a')).getInnerHtml() ).toContain('Wanganui');
-            expect(dests[21].element(by.css('.destination a')).getInnerHtml() ).toContain('Whangarei');
+        var navDropDown = element(by.css('.destinations'));
+        navDropDown.click();
+        navDropDown.all(by.css('.ng-scope')).then(function (dests) {
+            expect(dests[0].getInnerHtml()).toContain('Auckland');
+            expect(dests[1].getInnerHtml()).toContain('Blenheim');
+            expect(dests[2].getInnerHtml()).toContain('Christchurch');
+            expect(dests[3].getInnerHtml()).toContain('Dunedin');
+            expect(dests[4].getInnerHtml()).toContain('Gisborne');
+            expect(dests[5].getInnerHtml()).toContain('Hamilton');
+            expect(dests[6].getInnerHtml()).toContain('Hokitika');
+            expect(dests[7].getInnerHtml()).toContain('Invercargill');
+            expect(dests[8].getInnerHtml()).toContain('Kerikeri');
+            expect(dests[9].getInnerHtml()).toContain('Napier Hastings');
+            expect(dests[10].getInnerHtml()).toContain('Nelson');
+            expect(dests[11].getInnerHtml()).toContain('New Plymouth');
+            expect(dests[12].getInnerHtml()).toContain('Palmerston North');
+            expect(dests[13].getInnerHtml()).toContain('Paraparaumu');
+            expect(dests[14].getInnerHtml()).toContain('Queenstown');
+            expect(dests[15].getInnerHtml()).toContain('Rotorua');
+            expect(dests[16].getInnerHtml()).toContain('Taupo');
+            expect(dests[17].getInnerHtml()).toContain('Tauranga');
+            expect(dests[18].getInnerHtml()).toContain('Timaru');
+            expect(dests[20].getInnerHtml()).toContain('Wellington');
+            expect(dests[19].getInnerHtml()).toContain('Wanganui');
+            expect(dests[21].getInnerHtml()).toContain('Whangarei');
         });
     });
 });
