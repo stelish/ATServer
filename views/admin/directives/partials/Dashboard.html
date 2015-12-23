@@ -16,7 +16,7 @@
             <div class="panel panel-default toast-widget toast-widget-orange" style="max-height: 80px">
                 <div class="panel-body">
                     <div class="toast-chart total-widget-dark">
-                        <canvas id="pass" class="chart chart-bar" chart-data="totalPassData" chart-options="dashOptions"
+                        <canvas id="pass" class="chart chart-line" chart-data="totalPassData" chart-options="dashOptions" style="max-height: 60px"
                                 chart-labels="labels" chart-legend="false" chart-series="series" chart-colours="dashboardColours"
                                 chart-click="onClick" >
                         </canvas>
@@ -24,7 +24,7 @@
 
                     <div class="toast-details">
                         <p>Total Pass</p>
-                        <span>{{totalPass}}</span>
+                        <span>{{totalPass ? totalPass : 0}}</span>
                     </div>
 
                 </div>
@@ -33,7 +33,7 @@
             <div class="panel panel-default toast-widget toast-widget-grey" style="max-height: 80px">
                 <div class="panel-body">
                     <div class="toast-chart total-widget-dark">
-                        <canvas id="fail" class="chart chart-bar" chart-data="totalFailData" chart-options="dashOptions"
+                        <canvas id="fail" class="chart chart-line" chart-data="totalFailData" chart-options="dashOptions" style="max-height: 60px"
                                 chart-labels="labels" chart-legend="false" chart-series="series" chart-colours="dashboardColours"
                                 chart-click="onClick" >
                         </canvas>
@@ -41,7 +41,7 @@
 
                     <div class="toast-details">
                         <p>Total Fail</p>
-                        <span>{{totalFail}}</span>
+                        <span>{{totalFail ? totalFail : 0}}</span>
                     </div>
 
                 </div>
@@ -50,9 +50,9 @@
             <div class="panel panel-default toast-widget toast-widget-blue" style="max-height: 80px">
                 <div class="panel-body">
                     <div class="toast-chart total-widget-dark">
-                        <canvas id="screenshots" class="chart chart-line" chart-data="monthlyFail" chart-options="dashOptions"
+                        <canvas id="screenshots" class="chart chart-line" chart-data="monthlyFail" chart-options="dashOptions" style="max-height: 60px"
                                 chart-labels="labels" chart-legend="false" chart-series="series" chart-colours="dashboardColours"
-                                chart-click="onClick" >
+                                chart-click="onClick" style="max-height: 80px">
                         </canvas>
                     </div>
 
@@ -67,7 +67,7 @@
             <div class="panel panel-default toast-widget toast-widget-green" style="max-height: 80px">
                 <div class="panel-body">
                     <div class="toast-chart total-widget-dark">
-                        <canvas id="misc" class="chart chart-line" chart-data="durationData" chart-options="dashOptions"
+                        <canvas id="misc" class="chart chart-line" chart-data="durationData" chart-options="dashOptions" style="max-height: 60px"
                                 chart-labels="durationLabels" chart-legend="false" chart-series="durationSeries" chart-colours="dashboardColours"
                                 chart-click="onClick" >
                         </canvas>
