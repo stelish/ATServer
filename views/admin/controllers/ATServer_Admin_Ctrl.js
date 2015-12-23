@@ -224,7 +224,7 @@ app.controller('AdminCtrl',['$scope','$http','$filter',function($scope,$http,$fi
             $scope.showLogin = false;
         }
 
-        setTimeout($scope.getData,30000);
+        setInterval($scope.getData,30000);
     };
 
     $scope.init();
