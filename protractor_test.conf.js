@@ -74,14 +74,14 @@ var gasReporter = {
                         browser.getCapabilities().then(function (capabilities) {
                             var browserName = capabilities.caps_.browserName.toUpperCase();
                             var fileName = result.description + '_' + new Date().toUTCString()+ '.png';
-                            var screenshotPath = path.join('reports/' + browserName+'_reports', fileName);
+                            var screenshotPath = path.join('reports/' + browserName+'_reports/', fileName);
                             console.log('************** screenshotPath is '+screenshotPath);
 
                             mkdirp(path.dirname(screenshotPath), function(err) {
                                 if(err) {
                                     throw new Error('Could not create directory for ' + screenshotPath);
                                 }
-                                var stream = fs.createWriteStream('reports/' + browserName+'_reports' + fileName);
+                                var stream = fs.createWriteStream('reports/' + browserName+'_reports/' + fileName);
                                 stream.write(new Buffer(png, 'base64'));
                                 stream.end();
                             });
@@ -233,7 +233,8 @@ exports.config = {
         footer_nav : 'tests/footer/Footer_Main_Crtl_Spec.js',
         ad : 'tests/ad/ThirdPartyAds_Crtl_Spec.js',
         lff : 'tests/lff/LFF_Main_Crtl_Spec.js',
-        slider : 'tests/slider/Slider_Main_Crtl_Spec.js'
+        slider : 'tests/slider/Slider_Main_Crtl_Spec.js',
+        gld : 'tests/gld/GLD_Main_Crtl_Spec.js'
     },
     //specs: ['../@static@/common/js/app/widgets/lff/e2e/LFF_Main_Crtl_Spec.js'],
 
