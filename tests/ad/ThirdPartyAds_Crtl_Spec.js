@@ -3,7 +3,7 @@
  * Created by Steve Kelly on 21/05/2015
  * for AirNZ
  */
-describe('Third_Party_Ad', function () {
+describe('Third Party Ad', function () {
     beforeEach(function() {
         browser.get('http://grabaseat.co.nz');
     });

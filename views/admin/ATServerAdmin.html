@@ -259,6 +259,7 @@
                 top: 35px;
                 left: 75px;
             }
+
             .dashboard-icon {
                 font-size: 100px;
                 font-weight: bold;
@@ -302,8 +303,62 @@
             }
 
             .results-list-wrapper {
+                min-height: 500px;
+                padding: 0 10px;
+            }
+
+            .results-list-wrapper-inner{
+                border: 1px #ccc solid;
+                height:500px;
 
             }
+
+            .result-success-wrapper{
+                width: 125px;
+                height: 125px;
+                border-radius: 50%;
+                background-color: rgba(0, 0, 0, 0.05);
+                position: absolute;
+                right: 10px;
+                top: 10px;
+            }
+
+            .results-icon {
+                font-size: 100px;
+                font-weight: bold;
+                color: rgba(255, 255, 255, 1);
+                margin-left: 10px;
+                margin-top: 10px;
+            }
+
+            .results-image-icon {
+                font-size: 120px;
+                font-weight: bold;
+                color: rgba(0, 0, 0, 0.15);
+                margin-left: 40%;
+                margin-top: 35%;
+            }
+
+            .results-time-details small{
+                font-weight: bold;
+            }
+
+            .result-detail-count span{
+                font-size: 36px;
+                margin-top: 13px;
+                margin-bottom: 10px;
+                margin-left: 10px;
+                margin-right: 10px;
+                color: #090909;
+            }
+
+            .resultSuccess {
+                background-color: rgba(139, 195, 74, 1);
+            }
+            .resultFail {
+                background-color: rgba(244, 67, 54, 1);
+            }
+
             /** END OF REUSLTS VIEW **/
 
             .body-divider{
@@ -337,7 +392,7 @@
                 <div id="dashboard" class="col-md-12 dashboard">
                     <h4>Dashboard</h4>
                     <ul class="dashboard-list">
-                        <li ng-repeat="component in testCompnentsSummary" class="col-md-3 dashboard-list-item">
+                        <li ng-repeat="component in testCompnentsSummary" class="col-md-3 dashboard-list-item" ng-click="setSpecificResultData(component)">
                             <div class="dashboard-list-item-inner" ng-class="{pass : component.status == 'passed', fail : component.status != 'passed'}">
                                 <!-- background icons -->
                                 <div class="dashboard-success-wrapper">
@@ -375,14 +430,72 @@
                     <h4>Results</h4>
                     <!-- current test -->
                     <div class="col-md-6 results-review-wrapper">
+                        <div ng-if="specificResultData != null">
+                            <h4>{{specificResultData.id}}</h4>
+                            <p>{{specificResultData.fullName}}</p>
+
+                            <div class="result-success-wrapper pull-right" ng-class="{resultSuccess : specificResultData.status == 'passed', resultFail : specificResultData.status != 'passed'}">
+                                <div ng-if="specificResultData.status">
+                                    <i class="material-icons results-icon" ng-if="specificResultData.status == 'passed'">check</i>
+                                    <i class="material-icons results-icon" ng-if="specificResultData.status != 'passed'">clear</i>
+                                </div>
+
+                            </div>
+
+                            <div class="result-detail-count" style="display: inline-flex">
+                                <h1>{{specificResultData.passedExpectations.length}}</h1>
+                                <span>/</span>
+                                <h1>{{specificResultData.failedExpectations.length}}</h1>
+                            </div>
+
+                            <!-- time details -->
+                            <div class="results-time-details">
+                                <div>
+                                    <small>Date:</small>
+                                    <p>{{specificResultData.date}}</p>
+                                </div>
+                                <div>
+                                    <small>Time:</small>
+                                    <p>{{specificResultData.time}}</p>
+                                </div>
+                                <div>
+                                    <small>Duration:</small>
+                                    <p>{{specificResultData.duration}}</p>
+                                </div>
+                            </div>
+
+                            <!-- failed reasons -->
+                            <div ng-if="specificResultData.pendingReason.length > 0">
+                                <small>Pending Reason:</small>
+                                <p>{{specificResultData.pendingReason}}</p>
+                            </div>
+
+                            <!-- failed detailed -->
+                            <div ng-if="specificResultData.failedExpectations.length > 0">
+                                <small style="font-weight: bold">Failed Tests:</small>
+                                <ul>
+                                    <li ng-repeat="failedResult in specificResultData.failedExpectations">
+                                        <h4>{{failedResult.message}}</h4>
+                                        <div>
+                                            <small style="font-weight: bold">Stack Trace:</small>
+                                            <p style="max-height: 80px; overflow: scroll; font-size: 10px">{{failedResult.stack}}</p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
 
                     </div>
                     <!-- recent test -->
                     <div class="col-md-6 results-list-wrapper">
-
+                        <div class="results-list-wrapper-inner">
+                            <i class="material-icons results-image-icon">photo</i>
+                            <img src="{{specificResultData.screenshotPath}}">
+                        </div>
                     </div>
                 </div>
 
+                <!-- Configurations -->
                 <div class="col-md-12">
                     <h4 style="margin-left: -15px;margin-bottom: -10px;">Controls</h4>
                     <div class="config-options">

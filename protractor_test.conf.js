@@ -65,6 +65,9 @@ var gasReporter = {
         console.log('************* Spec started: ' + result.description + ' whose full description is: ' + result.fullName);
     },
     specDone: function(result) {
+        var currentTime = new Date().getHours().toString() + new Date().getMinutes().toString() + new Date().getSeconds().toString()
+            + new Date().getDate().toString() + new Date().getMonth().toString() + new Date().getYear().toString();
+        var screenshotPath = '';
         // iterate and handle failed results
         protractor.promise.all(result.failedExpectations.map(function(failedResult){
             console.log('******** INSIDE PROMISE ***********');
@@ -73,8 +76,9 @@ var gasReporter = {
                         console.log('taking screenshot');
                         browser.getCapabilities().then(function (capabilities) {
                             var browserName = capabilities.caps_.browserName.toUpperCase();
-                            var fileName = result.description + '_' + new Date().toUTCString()+ '.png';
-                            var screenshotPath = path.join('reports/' + browserName+'_reports/', fileName);
+                            var fileName = currentTime + '.png';
+
+                            screenshotPath = path.join(__dirname,'reports/' + browserName+'_reports/', fileName);
                             console.log('************** screenshotPath is '+screenshotPath);
 
                             mkdirp(path.dirname(screenshotPath), function(err) {
@@ -93,6 +97,7 @@ var gasReporter = {
             result['date'] = new Date().toDateString();
             result['time'] = new Date().toTimeString();
             result['id'] = result['fullName'].split(' ')[0];
+            result['screenshotPath'] = screenshotPath;
 
             // get test time
             var duration = (new Date() - curTestStartTime) / 1000;
@@ -195,8 +200,8 @@ exports.config = {
             // set magic proxy
             proxy: {
                 proxyType: 'manual',
-                httpProxy: '10.65.61.156:3128',
-                sslProxy: '10.65.61.156:3128'
+                httpProxy: 'icecrown:3128',
+                sslProxy: 'icecrown:3128'
             }
         },
         // {
@@ -234,7 +239,8 @@ exports.config = {
         ad : 'tests/ad/ThirdPartyAds_Crtl_Spec.js',
         lff : 'tests/lff/LFF_Main_Crtl_Spec.js',
         slider : 'tests/slider/Slider_Main_Crtl_Spec.js',
-        gld : 'tests/gld/GLD_Main_Crtl_Spec.js'
+        gld : 'tests/gld/GLD_Main_Crtl_Spec.js',
+        flava: 'tests/flava/Flava_Main_Crtl_Spec.js',
     },
     //specs: ['../@static@/common/js/app/widgets/lff/e2e/LFF_Main_Crtl_Spec.js'],
 

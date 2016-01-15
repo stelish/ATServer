@@ -12,16 +12,18 @@ describe('LFF', function () {
         browser.driver.manage().window().maximize();
     });
 
-    it('should hide lff', function () {
+    it('should hide & show lff', function () {
         toggleBtn = element(by.id('lff-toggle-btn')) || null;
         expect(toggleBtn).not.toBe(null);
         // collapse
         toggleBtn.click();
-        expect(element(by.id('lffContentWrapper')).children()).toBeGreaterThan();
+        browser.sleep(2000);
+        expect( element( by.id('lffContentWrapper') ).$('#lff-widget')).not.toBe(null);
 
         // uncollapse
         toggleBtn.click();
-        expect(element(by.id('lff-wrapper')).children()).toBeGreaterThan();
+        browser.sleep(2000);
+        expect( element( by.id('lff-wrapper') ).$('#lff-widget')).not.toBe(null);
     });
 
     afterEach(function(){

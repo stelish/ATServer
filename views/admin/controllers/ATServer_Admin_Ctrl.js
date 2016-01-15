@@ -186,6 +186,12 @@ app.controller('AdminCtrl',['$scope','$http','$filter',function($scope,$http,$fi
     };
 
 
+    $scope.specificResultData = null;
+    $scope.setSpecificResultData = function(result){
+        $scope.specificResultData = result;
+    };
+
+
     // sets duration data
     $scope.setDurationData = function(data,avg){
         $scope.currentTestTime = avg;
